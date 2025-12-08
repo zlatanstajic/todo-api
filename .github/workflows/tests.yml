@@ -37,11 +37,14 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Copy environment file
-        run: cp .env.example .env
+      - name: Run composer post package install script
+        run: composer run post-root-package-install
 
-      - name: Generate app key
-        run: php artisan key:generate
+      - name: Clear previous configuration cache
+        run: php artisan config:clear
+
+      - name: Run composer post create project commands
+        run: composer run post-create-project-cmd
 
       - name: Execute tests
         run: php artisan test

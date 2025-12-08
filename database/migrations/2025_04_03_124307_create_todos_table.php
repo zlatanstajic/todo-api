@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @var string
      */
-    const TABLE_NAME = 'personal_access_tokens';
+    const TABLE_NAME = 'todos';
 
     /**
      * Run the migrations.
@@ -20,13 +20,12 @@ return new class extends Migration
     {
         Schema::create(self::TABLE_NAME, function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');
-            $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->boolean('completed')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

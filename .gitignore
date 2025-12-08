@@ -6,6 +6,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+.vscode
 .env
 .env.backup
 .env.production
@@ -19,5 +20,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.nova
-/.vscode
 /.zed
