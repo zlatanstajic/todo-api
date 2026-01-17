@@ -22,8 +22,8 @@ Route::middleware('throttle:60,1')->group(function () {
         Route::get('/', function () {
             return [
                 'data' => [
-                    'message' => __('messages.default.welcome')
-                ]
+                    'message' => __('messages.default.welcome'),
+                ],
             ];
         })->name('home');
     });

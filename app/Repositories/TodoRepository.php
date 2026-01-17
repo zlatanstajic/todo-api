@@ -10,32 +10,29 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * Todo Repository
- *
- * @package App\Repositories
  */
 class TodoRepository
 {
     /**
+     * The model class name.
+     */
+    protected string $model = Todo::class;
+
+    /**
      * Get all todos.
-     *
-     * @return Collection
      */
     public function getAll(): Collection
     {
-        return Todo::all();
+        return $this->model::all();
     }
 
     /**
      * Find todo by ID.
-     *
-     * @param int $id
-     *
-     * @return Todo|null
      */
     public function findById(int $id): ?Todo
     {
         try {
-            return Todo::findOrFail($id);
+            return $this->model::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             Log::warning("Todo item ID {$id} not found.");
 
@@ -45,23 +42,14 @@ class TodoRepository
 
     /**
      * Create a new todo.
-     *
-     * @param array $data
-     *
-     * @return Todo
      */
     public function create(array $data): Todo
     {
-        return Todo::create($data);
+        return $this->model::create($data);
     }
 
     /**
      * Update a todo.
-     *
-     * @param int $id
-     * @param array $data
-     *
-     * @return Todo
      *
      * @throws TodoNotFoundException
      */
@@ -69,8 +57,8 @@ class TodoRepository
     {
         $todo = $this->findById($id);
 
-        if (!$todo) {
-            throw new TodoNotFoundException();
+        if (! $todo) {
+            throw new TodoNotFoundException;
         }
 
         $todo->update($data);
@@ -80,13 +68,9 @@ class TodoRepository
 
     /**
      * Delete a todo.
-     *
-     * @param int $id
-     *
-     * @return bool
      */
     public function delete(int $id): bool
     {
-        return (bool) Todo::destroy($id);
+        return (bool) $this->model::destroy($id);
     }
 }

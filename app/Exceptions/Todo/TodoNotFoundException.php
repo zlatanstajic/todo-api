@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Exception thrown when a todo is not found.
- *
- * @package App\Exceptions\Todo
  */
 class TodoNotFoundException extends Exception
 {

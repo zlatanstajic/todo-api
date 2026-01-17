@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Exception thrown when a user is not found.
- *
- * @package App\Exceptions\User
  */
 class UserNotFoundException extends Exception
 {

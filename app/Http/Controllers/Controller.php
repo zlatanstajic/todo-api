@@ -7,19 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Base Controller
- *
- * @package App\Http\Controllers
  */
 abstract class Controller
 {
     /**
      * Send a success response.
-     *
-     * @param mixed $data
-     * @param string $message
-     * @param int    $code
-     *
-     * @return JsonResponse
      */
     protected function successResponse(
         mixed $data = [],
@@ -37,11 +29,6 @@ abstract class Controller
 
     /**
      * Send an error response.
-     *
-     * @param string $message
-     * @param int    $code
-     *
-     * @return JsonResponse
      */
     protected function errorResponse(
         string $message,

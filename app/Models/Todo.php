@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Todo Model
- *
- * @package App\Models
  */
 class Todo extends Model
 {
@@ -46,8 +44,6 @@ class Todo extends Model
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
     protected static function booted(): void
     {
@@ -56,8 +52,6 @@ class Todo extends Model
 
     /**
      * Get the user that owns the todo.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

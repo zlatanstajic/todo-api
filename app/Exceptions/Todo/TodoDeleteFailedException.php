@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Exception thrown when a todo deletion fails.
- *
- * @package App\Exceptions\Todo
  */
 class TodoDeleteFailedException extends Exception
 {

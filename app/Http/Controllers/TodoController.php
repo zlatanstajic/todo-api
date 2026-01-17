@@ -13,23 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Todo Controller
- *
- * @package App\Http\Controllers
  */
 class TodoController extends Controller
 {
-    /**
-     * @param TodoService $todoService
-     */
-    public function __construct(readonly TodoService $todoService)
+    public function __construct(public readonly TodoService $todoService)
     {
         //
     }
 
     /**
      * Get all todos.
-     *
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
@@ -46,18 +39,14 @@ class TodoController extends Controller
 
     /**
      * Get a specific todo by ID.
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
     public function show(int $id): JsonResponse
     {
         try {
             $todo = $this->todoService->getTodoById($id);
 
-            if (!$todo) {
-                throw new TodoNotFoundException();
+            if (! $todo) {
+                throw new TodoNotFoundException;
             }
 
             return $this->successResponse(new TodoResource($todo));
@@ -68,18 +57,14 @@ class TodoController extends Controller
 
     /**
      * Create a new todo.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
         try {
             $data = $request->validate([
-                'title'       => 'required|string|max:255',
+                'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'completed'   => 'boolean',
+                'completed' => 'boolean',
             ]);
 
             $data['user_id'] = $request->user()->id;
@@ -95,19 +80,14 @@ class TodoController extends Controller
 
     /**
      * Update an existing todo.
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
     public function update(Request $request, int $id): JsonResponse
     {
         try {
             $data = $request->validate([
-                'title'       => 'sometimes|required|string|max:255',
+                'title' => 'sometimes|required|string|max:255',
                 'description' => 'nullable|string',
-                'completed'   => 'boolean',
+                'completed' => 'boolean',
             ]);
 
             return $this->successResponse(
@@ -120,16 +100,12 @@ class TodoController extends Controller
 
     /**
      * Delete a todo.
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse
     {
         try {
-            if (!$this->todoService->deleteTodo($id)) {
-                throw new TodoDeleteFailedException();
+            if (! $this->todoService->deleteTodo($id)) {
+                throw new TodoDeleteFailedException;
             }
 
             return $this->successResponse();

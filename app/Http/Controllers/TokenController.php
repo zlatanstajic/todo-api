@@ -9,25 +9,16 @@ use Illuminate\Http\Request;
 
 /**
  * Token Controller
- *
- * @package App\Http\Controllers
  */
 class TokenController extends Controller
 {
-    /**
-     * @param TokenService $tokenService
-     */
-    public function __construct(readonly TokenService $tokenService)
+    public function __construct(public readonly TokenService $tokenService)
     {
         //
     }
 
     /**
      * Authenticate user.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function create(Request $request): JsonResponse
     {
