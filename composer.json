@@ -18,6 +18,8 @@
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^4.0",
+        "barryvdh/laravel-ide-helper": "^3.6",
         "dedoc/scramble": "^0.13.5",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "3.2.*",
@@ -59,26 +61,40 @@
             "@php artisan key:generate --ansi",
             "@php artisan migrate --graceful --ansi"
         ],
-        "dev": [
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate:fresh --seed --force",
+            "composer run artisan:ide-helper",
+            "npm install"
+        ],
+        "serve": [
+            "composer run artisan:clear",
             "Composer\\Config::disableProcessTimeout",
-            "composer run clear",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve --no-reload\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" --names=server,queue,logs"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" --names=server,queue,logs"
         ],
-        "check": [
-            "composer run clear",
-            "composer run pint",
-            "composer run phpstan",
-            "composer run phpunit"
+        "test": [
+            "composer run artisan:clear",
+            "composer run test:pint",
+            "composer run test:phpstan",
+            "composer run test:phpunit"
         ],
-        "clear": [
+        "artisan:clear": [
             "php artisan route:clear --ansi",
             "php artisan cache:clear --ansi",
             "php artisan config:clear --ansi"
         ],
-        "pint": "./vendor/bin/pint",
-        "phpstan": "vendor/bin/phpstan analyse",
-        "phpunit": "vendor/bin/phpunit --colors=always --testdox --coverage-html storage/coverage",
-        "summary": "vendor/bin/phpunit --colors=always --testdox --coverage-text| grep -Pzo \"(?s)Summary:.*?Lines:.*?\\n\" | head -n 10"
+        "artisan:ide-helper": [
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:models -N",
+            "php artisan ide-helper:meta"
+        ],
+        "test:pint": "./vendor/bin/pint",
+        "test:phpstan": "vendor/bin/phpstan analyse",
+        "test:phpunit": "vendor/bin/phpunit --colors=always --testdox",
+        "phpunit:coverage": "vendor/bin/phpunit --colors=always --testdox --coverage-html storage/coverage",
+        "phpunit:summary": "vendor/bin/phpunit --colors=always --testdox --coverage-text| grep -Pzo \"(?s)Summary:.*?Lines:.*?\\n\" | head -n 10"
     },
     "extra": {
         "laravel": {

@@ -9,10 +9,13 @@
 /vendor
 .vscode
 .env
+.env.testing
 .env.backup
 .env.production
 .phpactor.json
 .phpunit.result.cache
+.phpstorm.meta.php
+_ide_*.php
 Homestead.json
 Homestead.yaml
 npm-debug.log

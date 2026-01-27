@@ -76,47 +76,10 @@ Note: `.extras/git/pre-commit` is installed during `composer install`.
     cd todo-api
     ```
 
-- **Install Node.js dependencies**
+- **Run setup script**
 
     ```bash
-    npm install
-    ```
-
-- **Install PHP dependencies**
-
-    ```bash
-    composer install
-    ```
-
-- **Copy environment file**
-
-    ```bash
-    cp .env.example .env
-    ```
-
-- **Generate application key**
-
-    ```bash
-    php artisan key:generate
-    ```
-
-- **Configure environment variables**
-
-    - Edit `.env` to set your database and other settings.
-
-- **Run database migrations and seeders**
-
-    ```bash
-    php artisan migrate:fresh --seed
-    ```
-
-    This will run all migrations and populate the database with initial data (users and todos).
-
-    Alternatively, if you've already migrated:
-
-    ```bash
-    php artisan migrate
-    php artisan db:seed
+    composer run setup
     ```
 
     **Default admin user:** The seeders create a default admin account for local development.
@@ -124,8 +87,6 @@ Note: `.extras/git/pre-commit` is installed during `composer install`.
     - **Password:** `admin`
 
     Change this password immediately for any non-local environment.
-
-    **Note:** The pre-commit hook from `.extras/git/pre-commit` is automatically installed during `composer install`, which runs code checks before every commit.
 
 [⬆ back to top](#table-of-contents)
 
@@ -136,7 +97,7 @@ Note: `.extras/git/pre-commit` is installed during `composer install`.
 - **Start the development server and assets watcher:**
 
     ```bash
-    composer run dev
+    composer run serve
     ```
 
     This will:
@@ -194,11 +155,11 @@ This project includes `dedoc/scramble` (a dev dependency) to generate OpenAPI-co
 **Useful commands**
 
 ```bash
-# Run all checks (format, static analysis, tests)
-composer run check
+# Run all tests (format, static analysis, tests)
+composer run test
 
 # Run tests with coverage
-composer run phpunit
+composer run phpunit:coverage
 
 # Open HTML coverage report
 open storage/coverage/index.html
