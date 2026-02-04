@@ -1,0 +1,12 @@
+{
+  "$schema": "https://www.schemastore.org/package.json",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "husky": "^9.1.7"
+  }
+}

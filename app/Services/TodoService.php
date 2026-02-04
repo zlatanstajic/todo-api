@@ -1,23 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\Todo;
 use App\Repositories\TodoRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * TodoService handles business logic related to todos.
- *
- * @package App\Services
  */
 class TodoService
 {
-    /**
-     * @param TodoRepository $todoRepository
-     */
-    public function __construct(readonly TodoRepository $todoRepository)
+    public function __construct(public readonly TodoRepository $todoRepository)
     {
         //
     }
@@ -34,10 +30,6 @@ class TodoService
 
     /**
      * Get todo by ID.
-     *
-     * @param int $id
-     *
-     * @return Todo|null
      */
     public function getTodoById(int $id): ?Todo
     {
@@ -46,10 +38,6 @@ class TodoService
 
     /**
      * Create a new todo.
-     *
-     * @param array $data
-     *
-     * @return Todo
      */
     public function createTodo(array $data): Todo
     {
@@ -58,11 +46,6 @@ class TodoService
 
     /**
      * Update a todo.
-     *
-     * @param int $id
-     * @param array $data
-     *
-     * @return Todo
      */
     public function updateTodo(int $id, array $data): Todo
     {
@@ -71,10 +54,6 @@ class TodoService
 
     /**
      * Delete a todo.
-     *
-     * @param int $id
-     *
-     * @return bool
      */
     public function deleteTodo(int $id): bool
     {

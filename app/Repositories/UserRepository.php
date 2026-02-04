@@ -1,25 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Models\User;
 
 /**
  * User Repository
- *
- * @package App\Repositories
  */
 class UserRepository
 {
     /**
+     * The model class name.
+     */
+    protected string $model = User::class;
+
+    /**
      * Find user by email.
-     *
-     * @param string $email
-     *
-     * @return User|null
      */
     public function findByEmail(string $email): ?User
     {
-        return User::where('email', $email)->first();
+        return $this->model::where('email', $email)->first();
     }
 }

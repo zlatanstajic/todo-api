@@ -2,7 +2,7 @@ includes:
     - vendor/larastan/larastan/extension.neon
 
 parameters:
-    level: 5 # Change to a higher level for stricter checks
+    level: 5
     paths:
         - app
     ignoreErrors: []

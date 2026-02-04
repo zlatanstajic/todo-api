@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Exceptions;
+declare(strict_types=1);
+
+namespace App\Exceptions\User;
 
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Exception thrown when invalid credentials are provided.
- *
- * @package App\Exceptions\Todo
  */
-class InvalidCredentialsException extends Exception
+class UserInvalidCredentialsException extends Exception
 {
     /**
      * Construct the exception.

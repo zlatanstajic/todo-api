@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\UserScope;
@@ -10,8 +12,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Todo Model
- *
- * @package App\Models
  */
 class Todo extends Model
 {
@@ -30,11 +30,27 @@ class Todo extends Model
     ];
 
     /**
+     * The "booted" method of the model.
+     */
+    public static function booted(): void
+    {
+        static::addGlobalScope(new UserScope);
+    }
+
+    /**
+     * Get the user that owns the todo.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    public function casts(): array
     {
         return [
             'completed' => 'boolean',
@@ -42,25 +58,5 @@ class Todo extends Model
             'updated_at' => 'immutable_datetime',
             'deleted_at' => 'immutable_datetime',
         ];
-    }
-
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new UserScope);
-    }
-
-    /**
-     * Get the user that owns the todo.
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

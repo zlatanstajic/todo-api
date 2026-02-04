@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Services\TokenService;
@@ -9,32 +11,23 @@ use Illuminate\Http\Request;
 
 /**
  * Token Controller
- *
- * @package App\Http\Controllers
  */
 class TokenController extends Controller
 {
-    /**
-     * @param TokenService $tokenService
-     */
-    public function __construct(readonly TokenService $tokenService)
+    public function __construct(public readonly TokenService $tokenService)
     {
         //
     }
 
     /**
      * Authenticate user.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function create(Request $request): JsonResponse
     {
         try {
             $data = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|string|min:5',
+                'email' => ['required', 'email'],
+                'password' => ['required', 'string', 'min:5'],
             ]);
 
             return $this->successResponse([

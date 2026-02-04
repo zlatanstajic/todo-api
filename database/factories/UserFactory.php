@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -32,7 +34,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn () => [
             'email_verified_at' => null,
         ]);
     }
@@ -42,10 +44,10 @@ class UserFactory extends Factory
      */
     public function admin(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('admin'),
+        return $this->state(fn () => [
+            'name' => env('ADMIN_NAME', 'Admin'),
+            'email' => env('ADMIN_EMAIL', 'admin@example.com'),
+            'password' => Hash::make(env('ADMIN_PASSWORD', 'admin')),
         ]);
     }
 }

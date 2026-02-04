@@ -1,6 +1,10 @@
 # Todo API
 
-> This API is a simple Todo application demonstrating common patterns such as resource controllers, service/repository layers, API resources, and authentication.
+[![Tests](https://img.shields.io/badge/tests-PHPUnit-brightgreen)](./)
+[![Coverage](https://img.shields.io/badge/coverage-html-blue)](storage/coverage/index.html)
+
+This API is a simple Todo application demonstrating resource
+controllers, service/repository layers, API resources, and auth.
 
 ## Table of Contents
 
@@ -25,63 +29,43 @@
 - Service and repository layers for business logic and data access
 - API resource formatting
 
-[⬆ back to top](#table-of-contents)
+### Prerequisites
 
----
+- PHP 8.2+ and Composer 2.x
+- Node.js if you will build frontend assets
 
-## Todo Functionality
+### Quick start
 
-The core of this app is a Todo management API. The main files involved are:
+```bash
+git clone <repository-url>
+cd todo-api
+composer install
+cp .env.example .env
+php artisan key:generate
+```
 
-- [`app/Models/Todo.php`](app/Models/Todo.php): Eloquent model for todos, using soft deletes and factories for generating test data.
-- [`database/migrations/2025_04_03_124307_create_todos_table.php`](database/migrations/2025_04_03_124307_create_todos_table.php): Migration for the `todos` table, with fields for `title`, `description`, `completed`, timestamps, and soft deletes.
-- [`database/factories/TodoFactory.php`](database/factories/TodoFactory.php): Factory for generating fake todo data with realistic values.
-- [`database/seeders/TodoSeeder.php`](database/seeders/TodoSeeder.php): Seeder that uses the `TodoFactory` to populate the database with sample todos.
-- [`app/Repositories/TodoRepository.php`](app/Repositories/TodoRepository.php): Handles data access for todos.
-- [`app/Services/TodoService.php`](app/Services/TodoService.php): Contains business logic for todos.
-- [`app/Http/Controllers/TodoController.php`](app/Http/Controllers/TodoController.php): API controller for CRUD operations on todos.
-- [`app/Http/Resources/TodoResource.php`](app/Http/Resources/TodoResource.php): Formats todo data for API responses.
+If you use frontend assets:
 
-### Todo API Endpoints
+```bash
+npm install
+npm run build
+```
 
-- `GET /api/todos` — List all todos
-- `GET /api/todos/{id}` — Get a single todo
-- `POST /api/todos` — Create a new todo
-- `PUT/PATCH /api/todos/{id}` — Update a todo
-- `DELETE /api/todos/{id}` — Delete a todo
+### Database (local)
 
-All endpoints require authentication via Sanctum.
+```bash
+php artisan migrate:fresh --seed
+```
 
-Authentication
+Default local admin user (change before prod):
+- Email: admin@example.com
+- Password: admin
 
-- **Create token:** `POST /api/tokens` — Exchange user credentials for an access token (used with the `Authorization: Bearer <token>` header).
+Default local admin user (configurable via `.env`):
+- Email: value of `ADMIN_EMAIL` (default: `admin@example.com`)
+- Password: value of `ADMIN_PASSWORD` (default: `admin`)
 
-    Example request body:
-
-    ```json
-    {
-        "email": "admin@example.com",
-        "password": "admin"
-    }
-    ```
-
-    Example `curl` to obtain a token:
-
-    ```bash
-    curl -X POST http://localhost:8000/api/tokens \
-        -H "Content-Type: application/json" \
-        -d '{"email":"admin@example.com","password":"admin"}'
-    ```
-
-    Use the returned token with `Authorization: Bearer <token>` for protected routes.
-
-### Todo Model Fields
-
-- `title` (string, required)
-- `description` (text, optional)
-- `completed` (boolean, default: false)
-- `created_at`, `updated_at` (timestamps)
-- `deleted_at` (for soft deletes)
+Note: `.extras/git/pre-commit` is installed during `composer install`.
 
 [⬆ back to top](#table-of-contents)
 
@@ -96,65 +80,18 @@ Authentication
     cd todo-api
     ```
 
-- **Install Node.js dependencies**
+- **Run setup script**
 
     ```bash
-    npm install
+    composer run setup
     ```
 
-- **Install PHP dependencies**
+    **Default admin user:** The seeders create a default admin account for local development. Credentials are read from `.env`:
+    - `ADMIN_NAME` (default: `Admin`)
+    - `ADMIN_EMAIL` (default: `admin@example.com`)
+    - `ADMIN_PASSWORD` (default: `admin`)
 
-    ```bash
-    composer install
-    ```
-
-- **Copy environment file**
-
-    ```bash
-    cp .env.example .env
-    ```
-
-- **Generate application key**
-
-    ```bash
-    php artisan key:generate
-    ```
-
-- **Configure environment variables**
-
-    - Edit `.env` to set your database and other settings.
-
-- **Run database migrations and seeders**
-
-    ```bash
-    php artisan migrate:fresh --seed
-    ```
-
-    This will run all migrations and populate the database with initial data (users and todos).
-
-    Alternatively, if you've already migrated:
-
-    ```bash
-    php artisan migrate
-    php artisan db:seed
-    ```
-
-    **Default admin user:** The seeders create a default admin account for local development.
-    - **Email:** `admin@example.com`
-    - **Password:** `admin`
-
-    Change this password immediately for any non-local environment.
-
-- **(Optional) Set up pre-commit hook**
-
-    To automatically run code checks before each commit, you can enable the provided pre-commit hook:
-
-    ```bash
-    cp .extras/git/pre-commit .git/hooks/pre-commit
-    chmod +x .git/hooks/pre-commit
-    ```
-
-    This will run `composer run check` before every commit.
+    Change these values before using the application in any non-local environment.
 
 [⬆ back to top](#table-of-contents)
 
@@ -165,7 +102,7 @@ Authentication
 - **Start the development server and assets watcher:**
 
     ```bash
-    composer run dev
+    composer run serve
     ```
 
     This will:
@@ -210,7 +147,7 @@ This project includes `dedoc/scramble` (a dev dependency) to generate OpenAPI-co
     - `/docs/api.json` — the OpenAPI JSON document describing the API
 
 - **Notes:**
-    - By default Scramble exposes these routes only in the `local` environment. To make them available in other environments, configure the `viewApiDocs` gate as documented at https://scramble.dedoc.co/usage/getting-started#docs-authorization.
+    - By default Scramble exposes these routes only in the `local` environment. To make them available in other environments, configure the `viewApiDocs` gate as documented in the [Scramble docs].
     - The JSON document is available at `http://<your-app>/docs/api.json` and can be used with tools that accept OpenAPI/Swagger JSON.
 
 [⬆ back to top](#table-of-contents)
@@ -220,11 +157,39 @@ This project includes `dedoc/scramble` (a dev dependency) to generate OpenAPI-co
 
 ## Testing
 
-- **Run tests:**
+**Useful commands**
 
-    ```bash
-    composer run check
-    ```
+```bash
+# Run all tests (format, static analysis, tests)
+composer run test
+
+# Run tests with coverage
+composer run phpunit:coverage
+
+# Open HTML coverage report
+open storage/coverage/index.html
+```
+
+[⬆ back to top](#table-of-contents)
+
+## API Examples
+
+Exchange credentials for a token:
+
+```bash
+curl -X POST http://localhost:8000/api/tokens \
+    -H "Content-Type: application/json" \
+    -d '{"email":"admin@example.com","password":"admin"}'
+
+Note: the credentials used above come from your environment (`ADMIN_EMAIL` / `ADMIN_PASSWORD`).
+```
+
+Use the returned bearer token to call protected endpoints:
+
+```bash
+curl http://localhost:8000/api/todos \
+    -H "Authorization: Bearer <token>"
+```
 
 [⬆ back to top](#table-of-contents)
 
@@ -243,3 +208,5 @@ Contributions are welcome! Please open an issue or submit a pull request.
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 [⬆ back to top](#table-of-contents)
+
+[Scramble docs]: https://scramble.dedoc.co/usage/getting-started#docs-authorization

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('throttle:60,1')->group(function () {
+Route::middleware('throttle:60,1')->group(function (): void {
     /**
      * Public routes
      */
-    Route::group(['prefix' => '/'], function () {
+    Route::group(['prefix' => '/'], function (): void {
         /**
          * Authentication
          */
@@ -19,19 +21,17 @@ Route::middleware('throttle:60,1')->group(function () {
         /**
          * API Home Route
          */
-        Route::get('/', function () {
-            return [
-                'data' => [
-                    'message' => __('messages.default.welcome')
-                ]
-            ];
-        })->name('home');
+        Route::get('/', fn () => [
+            'data' => [
+                'message' => __('messages.default.welcome'),
+            ],
+        ])->name('home');
     });
 
     /**
      * Protected routes
      */
-    Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::group(['middleware' => 'auth:sanctum'], function (): void {
         /**
          * Todos
          */

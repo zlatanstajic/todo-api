@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions\Todo;
 
 use Exception;
@@ -7,8 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Exception thrown when a todo is not found.
- *
- * @package App\Exceptions\Todo
  */
 class TodoNotFoundException extends Exception
 {

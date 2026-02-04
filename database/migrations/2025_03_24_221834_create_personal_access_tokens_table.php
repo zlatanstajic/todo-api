@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +13,7 @@ return new class extends Migration
      *
      * @var string
      */
-    const TABLE_NAME = 'personal_access_tokens';
+    public const TABLE_NAME = 'personal_access_tokens';
 
     /**
      * Run the migrations.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Todo;
@@ -9,8 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * TodoFactory
  *
  * Factory for creating Todo model instances for testing and seeding.
- *
- * @package Database\Factories
  */
 class TodoFactory extends Factory
 {
