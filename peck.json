@@ -4,8 +4,19 @@
         "words": [
             "php",
             "filesystems",
-            "todos"
+            "tldr",
+            "timelines",
+            "upsert",
+            "upserted",
+            "upserts",
+            "unmapped",
+            "jsonp",
+            "crlf"
         ],
-        "paths": []
+        "paths": [
+            "tests/Fixtures",
+            "config/timelines.php",
+            "resources/lang/sr"
+        ]
     }
 }

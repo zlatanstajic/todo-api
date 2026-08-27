@@ -8,6 +8,9 @@ use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
 
 return RectorConfig::configure()
+    ->withSkip([
+        __DIR__.'/bootstrap/cache',
+    ])
     ->withPaths([
         __DIR__.'/app',
         __DIR__.'/bootstrap',

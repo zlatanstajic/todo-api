@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use App\Exceptions\User\UserInvalidCredentialsException;
 use App\Http\Controllers\TokenController;
+use App\Models\User;
 use App\Services\TokenService;
-use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
@@ -158,7 +159,7 @@ class TokenControllerTest extends TestCase
             $resp->getData(true));
     }
 
-    public function test_create_handles_authenticate_exception(): void
+    public function test_create_maps_invalid_credentials_to_generic_401(): void
     {
         $data = [
             'email' => 'x@x.com',
@@ -171,7 +172,7 @@ class TokenControllerTest extends TestCase
         $service = Mockery::mock(TokenService::class);
         $service->shouldReceive('authenticate')
             ->once()
-            ->andThrow(new Exception('bad creds', 401));
+            ->andThrow(new UserInvalidCredentialsException);
 
         $ctrl = new TokenController($service);
 
@@ -179,6 +180,78 @@ class TokenControllerTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $resp);
         $this->assertSame(401, $resp->getStatusCode());
-        $this->assertSame(['error' => 'bad creds'], $resp->getData(true));
+        $this->assertSame(['error' => 'ok'], $resp->getData(true));
+    }
+
+    public function test_destroy_revokes_current_token(): void
+    {
+        $user = new User;
+
+        $req = Mockery::mock(Request::class);
+        $req->shouldReceive('user')->once()->andReturn($user);
+
+        $service = Mockery::mock(TokenService::class);
+        $service->shouldReceive('revoke')->once()->with($user);
+
+        $ctrl = new TokenController($service);
+
+        $resp = $ctrl->destroy($req);
+
+        $this->assertSame(200, $resp->getStatusCode());
+    }
+
+    public function test_destroy_all_revokes_all_tokens(): void
+    {
+        $user = new User;
+
+        $req = Mockery::mock(Request::class);
+        $req->shouldReceive('user')->once()->andReturn($user);
+
+        $service = Mockery::mock(TokenService::class);
+        $service->shouldReceive('revokeAll')->once()->with($user);
+
+        $ctrl = new TokenController($service);
+
+        $resp = $ctrl->destroyAll($req);
+
+        $this->assertSame(200, $resp->getStatusCode());
+    }
+
+    public function test_destroy_handles_exception(): void
+    {
+        $user = new User;
+
+        $req = Mockery::mock(Request::class);
+        $req->shouldReceive('user')->once()->andReturn($user);
+
+        $service = Mockery::mock(TokenService::class);
+        $service->shouldReceive('revoke')
+            ->once()
+            ->andThrow(new UserInvalidCredentialsException);
+
+        $ctrl = new TokenController($service);
+
+        $resp = $ctrl->destroy($req);
+
+        $this->assertSame(401, $resp->getStatusCode());
+    }
+
+    public function test_destroy_all_handles_exception(): void
+    {
+        $user = new User;
+
+        $req = Mockery::mock(Request::class);
+        $req->shouldReceive('user')->once()->andReturn($user);
+
+        $service = Mockery::mock(TokenService::class);
+        $service->shouldReceive('revokeAll')
+            ->once()
+            ->andThrow(new UserInvalidCredentialsException);
+
+        $ctrl = new TokenController($service);
+
+        $resp = $ctrl->destroyAll($req);
+
+        $this->assertSame(401, $resp->getStatusCode());
     }
 }

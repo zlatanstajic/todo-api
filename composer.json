@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "zlatanstajic/todo-api",
+    "name": "zlatanstajic/alternate-history-wiki-api",
     "type": "project",
-    "description": "A simple Todo API built with Laravel 12.",
-    "keywords": ["laravel", "framework", "sanctum", "example", "todo", "api"],
+    "description": "API backend for the Alternate History Wiki built with Laravel 12.",
+    "keywords": ["laravel", "sanctum", "api", "alternate-history", "wiki", "timelines"],
     "license": "MIT",
     "authors": [
         {

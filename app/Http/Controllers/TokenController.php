@@ -37,7 +37,35 @@ class TokenController extends Controller
                 ),
             ]);
         } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
+            return $this->exceptionResponse($e);
+        }
+    }
+
+    /**
+     * Revoke the current access token.
+     */
+    public function destroy(Request $request): JsonResponse
+    {
+        try {
+            $this->tokenService->revoke($request->user());
+
+            return $this->successResponse();
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e);
+        }
+    }
+
+    /**
+     * Revoke all of the user's access tokens.
+     */
+    public function destroyAll(Request $request): JsonResponse
+    {
+        try {
+            $this->tokenService->revokeAll($request->user());
+
+            return $this->successResponse();
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e);
         }
     }
 }

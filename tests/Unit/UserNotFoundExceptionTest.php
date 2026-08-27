@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use App\Exceptions\ApiException;
 use App\Exceptions\User\UserNotFoundException;
 use Exception;
 use Illuminate\Container\Container;
@@ -30,6 +31,7 @@ class UserNotFoundExceptionTest extends TestCase
         $this->assertSame('user not found', $ex->getMessage());
         $this->assertSame(Response::HTTP_NOT_FOUND, $ex->getCode());
         $this->assertInstanceOf(Exception::class, $ex);
+        $this->assertInstanceOf(ApiException::class, $ex);
         $this->assertInstanceOf(UserNotFoundException::class, $ex);
     }
 }

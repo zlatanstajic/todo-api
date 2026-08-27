@@ -1,4 +1,4 @@
-# Todo API
+# Alternate History Wiki API
 
 [![Tests: PHPUnit](https://img.shields.io/badge/Tests-PHPUnit-brightgreen.svg)](phpunit.xml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
@@ -118,6 +118,14 @@ The application is available at `http://localhost:8000` by default. To start onl
 ```bash
 php artisan serve
 ```
+
+- **Import the real content** (optional, requires the wiki repo checkout)
+
+    ```bash
+    php artisan timelines:import ../alternate-history-wiki/histories
+    ```
+
+Note: `.extras/git/pre-commit` is installed during `composer install`.
 
 [⬆ back to top](#table-of-contents)
 

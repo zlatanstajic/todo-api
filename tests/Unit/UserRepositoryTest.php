@@ -13,6 +13,8 @@ class UserStub extends BaseUser
 {
     public static $whereReturn = null;
 
+    public static $createReturn = null;
+
     public static function where($column, $value)
     {
         return new class
@@ -23,6 +25,11 @@ class UserStub extends BaseUser
             }
         };
     }
+
+    public static function create(array $attributes = [])
+    {
+        return static::$createReturn ?? new BaseUser;
+    }
 }
 
 class UserRepositoryTest extends TestCase
@@ -30,6 +37,7 @@ class UserRepositoryTest extends TestCase
     protected function tearDown(): void
     {
         UserStub::$whereReturn = null;
+        UserStub::$createReturn = null;
     }
 
     public function test_find_by_email_returns_user_when_found(): void
@@ -64,5 +72,22 @@ class UserRepositoryTest extends TestCase
         };
 
         $this->assertNull($repo->findByEmail('x@y.z'));
+    }
+
+    public function test_create_returns_created_user(): void
+    {
+        $user = new BaseUser;
+
+        UserStub::$createReturn = $user;
+
+        $repo = new class extends UserRepository
+        {
+            public function __construct()
+            {
+                $this->model = UserStub::class;
+            }
+        };
+
+        $this->assertSame($user, $repo->create(['email' => 'a@b.c']));
     }
 }

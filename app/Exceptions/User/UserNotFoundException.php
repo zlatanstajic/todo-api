@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Exceptions\User;
 
-use Exception;
+use App\Exceptions\ApiException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Exception thrown when a user is not found.
  */
-class UserNotFoundException extends Exception
+class UserNotFoundException extends ApiException
 {
     /**
      * Construct the exception.
